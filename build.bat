@@ -88,6 +88,7 @@ goto:EOF
   set cmode=-interaction=batchmode
   xelatex %cmode% sduthesis.dtx
   xelatex %cmode% sduthesis.dtx
+  xelatex %cmode% sduthesis.dtx
   xelatex %cmode% sduthesis-demo.tex
   xelatex %cmode% sduthesis-demo.tex
 goto:EOF
