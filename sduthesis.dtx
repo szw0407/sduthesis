@@ -21,12 +21,13 @@
 % \iffalse
 %<*driver>
 \ProvidesFile{sduthesis.dtx}
-  [2016/05/31 v1.3.0a Thesis Template of Shandong Unversity]
+  [2017/06/06 v1.3.0a1 Thesis Template of Shandong Unversity]
 \documentclass{ltxdoc}
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
-\usepackage[UTF8, fntef, hyperref]{ctexcap}
+\usepackage[UTF8]{ctexcap}
+\RequirePackage[pdfusetitle]{hyperref}
 \newcommand{\pkg}[1]{\textsf{#1}}
 \usepackage{hologo}
 \newcommand{\XeLaTeX}{\hologo{XeLaTeX}}
@@ -62,6 +63,7 @@
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
+% \changes{v1.3.0a1}{2017/06/06}{调整了封面、标题、页眉和页脚等的样式。}
 % \changes{v1.2.0b}{2014/01/04}{重新构建了用户文档和演示文档。}
 % \changes{v1.2.0a}{2014/01/01}{使用 \pkg{DocStrip} 工具重新实现。}
 % \changes{v1.0}{2013/05/12}{首次公开。}
@@ -467,7 +469,7 @@
 %<*class>
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesClass{sduthesis}
-  [2016/05/31 v1.3.0a Thesis Template of Shandong University]
+  [2017/06/06 v1.3.0a1 Thesis Template of Shandong University]
 %    \end{macrocode}
 % \subsection{定义选项}
 % 载入 \pkg{kvoptions} 宏包，并进行相关设置。
@@ -486,7 +488,9 @@
 \DeclareBoolOption[true]{double}
 \DeclareComplementaryOption{single}{double}
 \DeclareDefaultOption{\PassOptionsToPackage{\CurrentOption}{ctexcap}}
-\LoadClass[a4paper, cs4size, UTF8, hyperref, fancyhdr]{ctexbook}
+\LoadClass[a4paper, zihao=-4, UTF8]{ctexbook}
+\RequirePackage[pdfusetitle]{hyperref}
+\RequirePackage{fancyhdr}
 \ProcessKeyvalOptions*\relax
 \ifSDU@opt@double\relax\else
   \PassOptionsToClass{oneside}{ctexbook}
@@ -531,6 +535,24 @@
 \newcommand{\fzbHei}{\heiti}
 %    \end{macrocode}
 % \end{macro}
+% 目录格式设置。
+%    \begin{macrocode}
+\RequirePackage{tocloft}
+\renewcommand\cfttoctitlefont{\hfill\bfseries\zihao{-3}}
+\renewcommand\cftaftertoctitle{\hfill\mbox{}}
+\renewcommand\cftchapdotsep{\cftdotsep}
+\renewcommand\cftchapleader{\cftdotfill{\cftchapdotsep}}
+\setlength{\cftbeforetoctitleskip}{10pt}
+\setlength{\cftaftertoctitleskip}{10pt}
+\renewcommand\cftloftitlefont{\hfill\bfseries\zihao{4}}
+\renewcommand\cftafterloftitle{\hfill\mbox{}}
+\setlength{\cftbeforeloftitleskip}{10pt}
+\setlength{\cftafterloftitleskip}{10pt}
+\renewcommand\cftlottitlefont{\hfill\bfseries\zihao{4}}
+\renewcommand\cftafterlottitle{\hfill\mbox{}}
+\setlength{\cftbeforelottitleskip}{10pt}
+\setlength{\cftafterlottitleskip}{10pt}
+%    \end{macrocode}
 % 行距设置。
 %    \begin{macrocode}
 \linespread{1.3}
@@ -553,18 +575,29 @@
 \AtBeginDocument{\pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrule}{%
-  \hrule\@height1.5pt\@width\headwidth%
-  \vskip1pt%
   \hrule\@height\headrulewidth\@width\headwidth%
+  \vskip1pt%
+  \hrule\@height1.5pt\@width\headwidth%
 }
 \fancyhead[C]{%
   \ifSDU@opt@chsstyle
-    \chead{\zihao{5}山东大学学士学位论文}
+    {\zihao{5}山东大学学士学位论文}
   \else
-    \chead{\small Shandong University Bachelor Thesis}
+    {\small Shandong University Bachelor's Thesis}
   \fi
 }
-\fancyfoot[OR, EL]{--~{\thepage}~--}}
+\fancyfoot[C]{\zihao{-5}{\thepage}}
+\fancypagestyle{plain}{
+ \fancyhead[C]{%
+   \ifSDU@opt@chsstyle
+     {\zihao{5}山东大学学士学位论文}
+   \else
+     {\small Shandong University Bachelor's Thesis}
+   \fi
+ }
+ \fancyfoot[C]{\zihao{-5}{\thepage}}
+}
+}
 %    \end{macrocode}
 % \subsection{数学环境}
 % 特殊符号的定义。
@@ -656,9 +689,11 @@
 %    \begin{macrocode}
 \newenvironment{enabstract}{%
   \newpage
+  \phantomsection
+  \addcontentsline{toc}{chapter}{\enabstractname}
   \centering
   \begin{minipage}{.9\textwidth}
-  \centerline{\zihao{-3}\bfseries\enabstractname}\vspace{.3cm}
+  \centerline{\zihao{4}\bfseries\enabstractname}\vspace{.3cm}
   \centering
   \begin{minipage}{.85\textwidth}
   \setlength{\parindent}{1.2em}
@@ -674,9 +709,11 @@
 %    \begin{macrocode}
 \newenvironment{cnabstract}{%
   \newpage
+  \phantomsection
+  \addcontentsline{toc}{chapter}{\cnabstractname}
   \centering
   \begin{minipage}{.9\textwidth}
-  \centerline{\zihao{-3}\bfseries\cnabstractname}\vspace{.3cm}
+  \centerline{\zihao{4}\bfseries\cnabstractname}\vspace{.3cm}
   \centering
   \begin{minipage}[c]{.85\textwidth}
   \setlength{\parindent}{2em}
@@ -691,20 +728,25 @@
 % \subsection{中文标题风格}
 %    \begin{macrocode}
 \ifSDU@opt@chsstyle
-  \CTEXsetup[name={第,章}]{chapter}
-  \CTEXsetup[number={\chinese{chapter}}]{chapter}
-  \CTEXsetup[format={\centering}]{chapter}
-  \CTEXsetup[nameformat={\bfseries\zihao{3}}]{chapter}
-  \CTEXsetup[titleformat={\bfseries\zihao{3}}]{chapter}
-  \CTEXsetup[aftername={\quad{}}]{chapter}
-  \CTEXsetup[beforeskip={10pt}]{chapter}
-  \CTEXsetup[afterskip={10pt}]{chapter}
-  \CTEXsetup[name={$\S$\,,}]{section}
-  \CTEXsetup[format={\bfseries\flushleft\zihao{4}}]{section}
-  \CTEXsetup[format={\bfseries\flushleft\zihao{-4}}]{subsection}
-  \CTEXsetup[format={\flushleft\zihao{-4}}]{subsubsection}
-  \CTEXsetup[name={附录~}]{appendix}
-  \CTEXsetup[number={\Alph{chapter}}]{appendix}
+  \ctexset{
+    chapter/name={第,章},
+    chapter/number={\chinese{chapter}},
+    chapter/format={\centering},
+    chapter/nameformat={\bfseries\zihao{4}},
+    chapter/titleformat={\bfseries\zihao{4}},
+    chapter/aftername={\quad{}},
+    chapter/beforeskip={10pt},
+    chapter/afterskip={10pt},
+    section/format={\bfseries\flushleft\zihao{4}},
+    subsection/format={\bfseries\flushleft\zihao{-4}},
+    subsubsection/format={\bfseries\flushleft\zihao{-4}},
+    subsection/beforeskip={3pt},
+    subsection/afterskip={3pt},
+    subsubsection/beforeskip={3pt},
+    subsubsection/afterskip={3pt},
+    paragraph/format={\bfseries\flushleft\zihao{-4}},
+    contentsname={目\hspace{1em}录},
+  }
 \else
   \PassOptionsToClass{scheme = plain, noindent}{ctexbook}
 \fi
@@ -738,7 +780,7 @@
 % \begin{macro}{\LeftLength}
 % 姓名登记表格左列的宽度。
 %    \begin{macrocode}
-\newcommand{\LeftLength}{2.3cm}
+\newcommand{\LeftLength}{9em}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\RightLength}
@@ -747,9 +789,23 @@
 \newcommand{\RightLength}{5.5cm}
 %    \end{macrocode}
 % \end{macro}
+% \begin{macro}{\LeftTopLength}
+% 顶部登记表格左列的宽度。
 %    \begin{macrocode}
-\newcommand{\Mcs}[1]{\makebox[\LeftLength][s]{{\zihao{3}\bfseries\kaishu{}#1}}}
-\newcommand{\Mcc}[1]{\makebox[\RightLength][c]{{\zihao{-3}\songti{}#1}}}
+\newcommand{\LeftTopLength}{5em}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\RightTopLength}
+% 顶部登记表格右列的宽度。
+%    \begin{macrocode}
+\newcommand{\RightTopLength}{2.5cm}
+%    \end{macrocode}
+% \end{macro}
+%    \begin{macrocode}
+\newcommand{\Mcs}[1]{\makebox[\LeftLength][s]{{\bfseries\zihao{-3}#1}}}
+\newcommand{\Mcc}[1]{\makebox[\RightLength][c]{{\bfseries\zihao{-3}#1}}}
+\newcommand{\Mts}[1]{\makebox[\LeftTopLength][s]{{\bfseries\zihao{-4}#1}}}
+\newcommand{\Mtc}[1]{\makebox[\RightTopLength][c]{{\bfseries\zihao{-4}#1}}}
 %    \end{macrocode}
 % \begin{macro}{\maketitlepage}
 % 最终输出封面的命令。
@@ -757,37 +813,63 @@
 \newcommand{\maketitlepage}{%
 \thispagestyle{empty}
 \begin{center}
-~
-\vskip 8mm\relax
 {
-  {\includegraphics[width = .7\textwidth]{SDUWords.jpg}}\\[3mm]
-  {\scalebox{4}{\fzbHei{}毕业论文（设计）}}
+\noindent
+\begin{tabular}{p{\LeftTopLength}p{\RightTopLength}}
+\Mts{分类号：}&
+\Mtc{\the\fenlei}\\
+\cline{2-2}
+\Mts{密级：}&
+\Mtc{\the\miji}\\
+\cline{2-2}
+\end{tabular}
+\hfill
+\begin{tabular}{p{\LeftTopLength}p{\RightTopLength}}
+\Mts{单位代号：}&
+\Mtc{\the\DWdaihao}\\
+\cline{2-2}
+\Mts{学号：}&
+\Mtc{\the\StuNum}\\
+\cline{2-2}
+\end{tabular}
 }
-\par \vskip 15mm \relax
+\par
+\vspace*{2cm}
 {
-  \begin{flushleft}
-    {\zihao{3}\heiti{}论文（设计）题目：}
-  \end{flushleft}
+\noindent
+{\includegraphics{SDULogo.png}}~{\includegraphics{SDU.png}}\\[3mm]
+{\fontsize{55pt}{\baselineskip}\selectfont{\fzbHei{}学士学位论文}}\\[3mm]
+{\zihao{-2}\textit{Shandong University} Bachelor's Thesis}
 }
+\par
+\vspace*{1.75cm}
+{
+\noindent
+\begin{tabular}{cc}
+{\textbf{\zihao{3}论文题目：}}&
+{\textbf{\zihao{3}\the\Ctitle}}\\
+\cline{2-2}
+\end{tabular}
+}
+\par
 \vfill
-{
-  \noindent
-  \zihao{-1}\kaishu\the\Ctitle
-}
-\vfill
-{
-  \begin{tabular}{p{\LeftLength}p{\RightLength}}
-  \Mcs{姓名}& \Mcc{\the\Cauthor}\\[-.8mm]\cline{2-2}\\[-4mm]
-  \Mcs{学号}& \Mcc{\the\StuNum}\\[-.8mm]\cline{2-2}\\[-4mm]
-  \Mcs{学院}& \Mcc{\the\Dpart}\\[-.8mm]\cline{2-2}\\[-4mm]
-  \Mcs{专业}& \Mcc{\the\Cmajor}\\[-.8mm]\cline{2-2}\\[-4mm]
-  \Mcs{年级}& \Mcc{\the\Grade}\\[-.8mm]\cline{2-2}\\[-4mm]
-  \Mcs{指导老师}& \Mcc{\the\Csuperver}\\[-.8mm]\cline{2-2}
-  \end{tabular}
-}
+\begin{tabular}{p{\LeftLength}p{\RightLength}}
+\Mcs{作者姓名：}&
+\Mcc{\the\Cauthor}\\
+\cline{2-2}\\
+\Mcs{学号：}&
+\Mcc{\the\StuNum}\\
+\cline{2-2}\\
+\Mcs{专业：}&
+\Mcc{\the\Cmajor}\\
+\cline{2-2}\\
+\Mcs{指导教师姓名：}&
+\Mcc{\the\Csuperver}\\
+\cline{2-2}\\
+\end{tabular}
 \par \vskip 20mm \relax
 {
-\zihao{3}\the\Cdate
+\zihao{-3}\the\Cdate
 }
 \end{center}
 \clearpage
@@ -808,7 +890,7 @@
 \begin{titlepage}
 \vspace{2cm} {\zihao{4}\baselineskip=30pt
 
-\centerline{\zihao{3}\bfseries 原\quad 创\quad 性\quad 声\quad 明}
+\centerline{\zihao{4}\bfseries 原\quad 创\quad 性\quad 声\quad 明}
 
 \noindent\hspace*{2em}本人郑重声明：所呈交的学位论文，是本人在导师指导下，独
 立进行研究所取得的成果。除文中已经注明引用的内容外，本论文不包
@@ -822,7 +904,7 @@
 
 \vspace{2.7cm}
 
-\centerline{\zihao{3}\bfseries 关于学位论文使用授权的声明}
+\centerline{\zihao{4}\bfseries 关于学位论文使用授权的声明}
 
 \noindent\hspace*{2em}本人完全了解山东大学有关保留、使用学位论文的规定，同意学
 校保留或向国家有关部门或机构送交论文的复印件和电子版，允许论文被查阅
@@ -846,7 +928,7 @@
 %<*class>
 %    \end{macrocode}
 % \begin{macro}{\maketitlepagestatement}
-% 输出标题页和承诺书，并设置 \cs{frontmatter}。
+% 输出标题页和承诺书。
 %    \begin{macrocode}
 \newcommand{\maketitlepagestatement}{%
 \maketitlepage
@@ -860,7 +942,6 @@
 ~
 \vfill\eject
 \setcounter{page}{1}
-\frontmatter
 }
 %    \end{macrocode}
 % \end{macro}
@@ -870,12 +951,22 @@
 \let\savedtableofcontents\tableofcontents
 \renewcommand{\tableofcontents}{%
   \savedtableofcontents
-    \ifSDU@opt@double
+  \ifSDU@opt@double
     \cleardoublepage
   \else
     \clearpage
   \fi
-  \mainmatter
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\appendix}
+% 重定义目录命令。
+%    \begin{macrocode}
+\let\savedappendix\appendix
+\renewcommand{\appendix}{%
+\savedappendix
+\renewcommand{\thechapter}{}
+\renewcommand{\thesection}{\arabic{section}}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -977,7 +1068,7 @@ The package has status 'maintained': the current maintainer is
 \DWdaihao{0518}               % 单位代号
 \miji{公开}                    % 密级
 \StuNum{200900000000}         % 学号
-\Ctitle{忆美丽的山大校园\\{\normalsize\raggedleft ——模板说明}} % 中文标题
+\Ctitle{忆美丽的山大校园——模板说明} % 中文标题
 \Cauthor{山大学子}             % 作者中文名
 \Dpart{数学学院}               % 学院
 \Cmajor{如何用\LaTeX{}拯救世界} % 专业中文名
@@ -994,7 +1085,10 @@ The package has status 'maintained': the current maintainer is
 \usepackage{booktabs}
 
 \begin{document}
+\frontmatter
 \maketitlepagestatement
+\phantomsection
+\addcontentsline{toc}{chapter}{\contentsname}
 \tableofcontents
 \begin{cnabstract}
 山东大学简称山大，最早可以追溯到 1901 年清朝政府建立的「山东大学堂」，她是中国第二所国立大学，也是第一所具有完整宪章的大学。2001 年，原山东大学、山东医科大学和山东工业大学合并组建成新的山东大学。
@@ -1011,6 +1105,7 @@ Graduting from SDU, I am suffering from lovesickness for the beauties, say the b
 \enkeywords{Shandong Unversity, Beautiful scenery, Thesis Template}
 \end{enabstract}
 
+\mainmatter
 \chapter{介绍}
 山东大学简称山大，是中国著名大学，是教育部直属的综合性全国重点大学。
 
@@ -1234,52 +1329,54 @@ Graduting from SDU, I am suffering from lovesickness for the beauties, say the b
 \end{minipage}
 \end{figure}
 \appendix
-\chapter{山东大学研究生院关于学位论文的格式要求}
+\backmatter
+\chapter{附录}
+\section{山东大学研究生院关于学位论文的格式要求}
 因为没有找到关于学士学位论文的格式要求，这里附上一段研究生院的要求，仅供参考。
-\section{学位论文的基本要求}
+\subsection{学位论文的基本要求}
 硕士学位论文一般应用中文撰写，提倡并鼓励用中、外文撰写。理学、工学、医学类博士学位论文须用中、外文撰写，人文社科类博士学位论文提倡并鼓励用中、外撰写。博士学位论文字数一般3--10万字，摘要为3000字以上；硕士学位论文字数一般2--5万字，摘要为1000字左右。
-\section{学位论文的结构要求}
+\subsection{学位论文的结构要求}
 博士、硕士学位论文一般应由以下几部分组成，依次为：
 \begin{enumerate}
 \item 论文封面；\item 扉页；\item 原创性声明和关于论文使用授权的声明；\item 中、外文论文目录；\item 中文摘要；\item 外文摘要；\item 符号说明；\item 论文正文（包括文献综述）；\item 附录、附图表；\item 引文出处及参考文献；\item 致谢；\item 攻读学位期间发表的学术论文目录；\item 学位论文评阅及答辩情况；\item 外文论文。
 \end{enumerate}
-\section{学位论文的格式要求}
-\subsection{论文封面}
+\subsection{学位论文的格式要求}
+\subsubsection{论文封面}
 采用研究生院统一印制的封面。封面的论文题目需要中、外文标示。用小二号加重黑体字打印封面的中文论文题目，用三号加重打印封面外文论文题目，四号加重黑体字打印脊背处论文题目和封面作者姓名、专业、指导教师、合作导师姓名和专业技术职务、论文完成时间、密级、学校代码、学号、分类号等内容。论文题目不得超过30个汉字。分类号须采用《中国图书资料分类法》进行标注。
-\subsection{扉页}
+\subsubsection{扉页}
 论文设扉页，其内容与封面相同，送交校学位办公室、图书馆和档案馆的论文其扉页由本人用碳素钢笔填写。
-\subsection{原创性声明和关于学位论文使用授权的说明}
+\subsubsection{原创性声明和关于学位论文使用授权的说明}
 论文作者和指导教师在向校学位办公室、图书馆、档案馆提交论文时必须在要求签名处签字。
-\subsection{论文目录}
+\subsubsection{论文目录}
 论文需要有中外文目录各一份。目录应将文内的章、节标题依次排列，并注明页码。标题应简明扼要。中文的「目录」标题字用小三号加重黑体字打印，目录内容用小四号宋体打印。外文的「目录」标题字用加重小三号字体大写字母打印，目录内容用小四号字体小写字母打印。
-\subsection{中文摘要}
+\subsubsection{中文摘要}
 中文摘要应以最简洁的语言介绍论文的内容要点，其中包括研究目的、研究方法、结果、结论及意义等，并注意突出论文中的新论点、新见解或创造性的成果，并在摘要后列出3--5个关键词，之间用分号相隔。关键词应体现论文的主要内容，词组符合学术规范。「中文摘要」 标题字用小三号加重黑体字打印，摘要内容用小四号宋体打印。
-\subsection{外文摘要}
+\subsubsection{外文摘要}
 外文摘要内容应与中文摘要基本一致，要语句通顺，语法正确，准确反映论文的内容，并在其后列出与中文相对应的外文关键词。「摘要」标题字用加重小三号字体大写字母打印，摘要内容用小四号字体小写字母打印。
-\subsection{符号说明}
+\subsubsection{符号说明}
 介绍论文中所用符号表示的意义。
-\subsection{论文正文}
+\subsubsection{论文正文}
 正文是学位论文的主体和核心部分。论文应在前言中包含必要的文献综述，并用小标题标明。论文中的计量单位、制图、制表、公式、缩略词和符号必须遵循国家规定的标准。其行文方式和文体的格局，研究生可根据自己研究课题的表达需要不同而变化，灵活掌握。论文题目用小三号黑体字打印，内容用小四号宋体打印，一般每行32--34字，每页29--31行。每页要有页眉，其上居中打印「山东大学博（硕）士学位论文」字样，页码标注在页面低端（页角）外侧。 论文中的章的标题用小三号加重黑体；节的标题用四号加重黑体；目及子目以下的标题用小四号加重黑体打印，标题应简明扼要，体现阐述内容的重点，无标点符号。
-\subsection{附录、附图表}
+\subsubsection{附录、附图表}
 主要列入正文内过分冗长的公式推导，供查读方便所需的辅助性数学工具或表格；重复性数据图表；实验性图片；程序全文及说明等。
-\subsection{引文出处及参考文献}
+\subsubsection{引文出处及参考文献}
 人文社科类学位论文应有详细的引文出处，格式应规范，一般标注于论文每一页的下方或每一章节的结尾位置。参考文献按文中使用的顺序列出，并注明文献的作者、题名、刊物（出版社）名称、出版时间、页码等。理学、工学、医学类学位论文按国际惯例执行。
-\subsection{致谢}
+\subsubsection{致谢}
 系对给予各类资助、指导和协助完成研究工作以及提供各种对论文工作有利条件的单位和个人表示的感谢。致谢应实事求是，切忌浮夸之词。
-\subsection{攻读学位期间发表的学术论文目录}
+\subsubsection{攻读学位期间发表的学术论文目录}
 按学术论文发表的时间顺序，列出本人在攻读学位期间发表或已录用的主要学术论文清单，包括顺序号、论文题名、刊物名称、卷册号及年月、起止页码、论文署名位次。
-\subsection{学位论文评阅及答辩情况}
+\subsubsection{学位论文评阅及答辩情况}
 论文答辩通过后，送校学位办公室、图书馆和档案馆的论文需将学位论文评阅及答辩情况填入《学位论文评阅及答辩情况表》中。
-\subsection{外文论文}
-\subsubsection{外文论文写作的形式}
+\subsubsection{外文论文}
+\subsubsubsection{外文论文写作的形式}
 可根据本学科的实际选择以下写作形式的其中一种。
 \begin{enumerate}
 \item 与中文全文在内容和形式上完全一致的外文全文;
 \item 两篇以上与学位论文相关的可以在外文期刊上发表（含已发表）的外文论文。
 \end{enumerate}
-\subsubsection{外语写作的要求}
+\subsubsubsection{外语写作的要求}
 学位论文外语写作要语句通顺，语法正确，符合该种语言的写作规范，能准确反映作者的学术思想。论文内容用小四号字体小写字母打印。
-\section{学位论文的打印与装订}
+\subsection{学位论文的打印与装订}
 论文用A4标准纸输出，双面打印。博士学位论文一式25份，硕士学位论文一式15份，装订成册，并按要求送交有关部门（送校图书馆和档案馆的论文需线装）。中、外文学位论文原则上一起装订，如篇幅过长可分别装订。除外语专业的学位论文外，其它学科的学位论文一律中文论文在前，外文论文在后。
 \vfill
 \hfill\begin{minipage}{.3\textwidth}
@@ -1287,6 +1384,7 @@ Graduting from SDU, I am suffering from lovesickness for the beauties, say the b
 
 二〇〇六年十一月十日
 \end{minipage}
+\clearpage
 \listoffigures
 \end{document}
 %</demo>
